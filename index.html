@@ -4,84 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Massaia Party Game</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        #quiz { display: none; }
-        .confetti { position: fixed; pointer-events: none; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to the Massaia Party Game!</h1>
-    <button id="start-button">Start Game</button>
-    <div id="quiz">
-        <h2>Quiz Questions</h2>
-        <div id="question"></div>
-        <button id="next-button">Next</button>
+    <div id="game-container">
+        <h1>Welcome to the Massaia Party Game!</h1>
+        <div id="quiz">
+            <h2>Quiz</h2>
+            <div id="questions"></div>
+            <button id="submit">Submit Answers</button>
+        </div>
+        <div id="timer">Time: <span id="time-left">30</span> seconds</div>
+        <div id="prizes">
+            <h2>Your Prizes</h2>
+            <div id="prize-list"></div>
+        </div>
     </div>
-    <div id="result"></div>
-    <script>
-        const questions = [
-            { question: 'What is the capital of Italy?', answers: ['Rome', 'Milan', 'Naples'], correct: 0 },
-            { question: 'What is the currency of Japan?', answers: ['Yen', 'Won', 'Dollar'], correct: 0 },
-            { question: 'What year did WWII end?', answers: ['1945', '1944', '1946'], correct: 0 }
-        ];
-        let currentQuestionIndex = 0;
-        const startButton = document.getElementById('start-button');
-        const quizDiv = document.getElementById('quiz');
-        const questionDiv = document.getElementById('question');
-        const nextButton = document.getElementById('next-button');
-        const resultDiv = document.getElementById('result');
-
-        startButton.addEventListener('click', function() {
-            startButton.style.display = 'none';
-            quizDiv.style.display = 'block';
-            showQuestion();
-        });
-
-        function showQuestion() {
-            const currentQuestion = questions[currentQuestionIndex];
-            questionDiv.innerHTML = currentQuestion.question + '<br>' + currentQuestion.answers.map((ans, index) => '<button class="answer">' + ans + '</button>').join('');
-            document.querySelectorAll('.answer').forEach((button, index) => {
-                button.addEventListener('click', function() { checkAnswer(index); });
-            });
-        }
-
-        function checkAnswer(selected) {
-            const currentQuestion = questions[currentQuestionIndex];
-            if (selected === currentQuestion.correct) {
-                alert('Correct!');
-            } else {
-                alert('Wrong answer!');
-            }
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                showQuestion();
-            } else {
-                endGame();
-            }
-        }
-
-        function endGame() {
-            quizDiv.style.display = 'none';
-            resultDiv.innerHTML = 'Game Over!';
-            unlockPrize();
-            showConfetti();
-        }
-
-        function unlockPrize() {
-            alert('You have unlocked a prize! 🎉');
-        }
-
-        function showConfetti() {
-            const canvas = document.createElement('canvas');
-            canvas.classList.add('confetti');
-            document.body.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            // Confetti drawing logic here.
-            alert('Confetti!'); // Replace with actual confetti animation.
-        }
-    </script>
+    <script src="game.js"></script>
 </body>
 </html>
+
+<script>
+let questions = [
+    {question: "Question 1: What is your name?", options: ["Alice", "Bob", "Charlie"], answer: "Alice"},
+    {question: "Question 2: What is your favorite color?", options: ["Red", "Green", "Blue"], answer: "Red"},
+    {question: "Question 3: What is your hobby?", options: ["Reading", "Traveling", "Gaming"], answer: "Reading"},
+    {question: "Question 4: What is your favorite food?", options: ["Pizza", "Pasta", "Salad"], answer: "Pizza"},
+    {question: "Question 5: What is your favorite animal?", options: ["Dog", "Cat", "Bird"], answer: "Dog"},
+    {question: "Question 6: What is your favorite movie?", options: ["Inception", "Titanic", "Avatar"], answer: "Inception"},
+    {question: "Question 7: What is your favorite book?", options: ["1984", "Moby Dick", "To Kill a Mockingbird"], answer: "1984"},
+    {question: "Question 8: Where do you live?", options: ["New York", "Los Angeles", "Chicago"], answer: "New York"},
+    {question: "Question 9: What is your dream job?", options: ["Doctor", "Engineer", "Artist"], answer: "Doctor"},
+    {question: "Question 10: What is your favorite sport?", options: ["Soccer", "Basketball", "Tennis"], answer: "Soccer"},
+    {question: "Question 11: What is your favorite season?", options: ["Spring", "Summer", "Winter"], answer: "Spring"},
+    {question: "Question 12: What is your favorite city?", options: ["New York", "Paris", "Tokyo"], answer: "Tokyo"},
+    {question: "Question 13: Who is your favorite artist?", options: ["Van Gogh", "Picasso", "Da Vinci"], answer: "Van Gogh"},
+    {question: "Question 14: What is your favorite music genre?", options: ["Rock", "Pop", "Classical"], answer: "Pop"}
+];
+
+let timer; 
+let timeLeft = 30; 
+
+function startTimer() {
+    timer = setInterval(() => {
+        if (timeLeft > 0) {
+            timeLeft--;
+            document.getElementById('time-left').innerText = timeLeft;
+        } else {
+            clearInterval(timer);
+            alert('Time is up!');
+        }
+    }, 1000);
+}
+
+function submitAnswers() {
+    clearInterval(timer);
+    // logic to evaluate answers and show prizes
+    alert('Well done! Check your prizes.');
+}
+
+document.getElementById('submit').onclick = submitAnswers;
+startTimer();
+</script>
